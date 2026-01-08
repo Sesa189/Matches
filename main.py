@@ -12,9 +12,10 @@ import logging
 import tornado.web
 import tornado.websocket
 import aiomqtt
+from backend.handlers.matches import MatchHandler
 
 BROKER = "test.mosquitto.org"
-TOPIC = "cesare/sensor/#"
+TOPIC = "cesare/matches/#"
 
 clients = set()
 
@@ -34,7 +35,6 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         print("WebSocket chiuso")
         clients.remove(self)
 
-'''
 async def mqtt_listener():
 
     logging.info("Connessione al broker MQTT...")
@@ -55,7 +55,7 @@ async def mqtt_listener():
             # inoltro ai client WebSocket
             for c in list(clients):
                 c.write_message(ws_message)
-'''
+
 
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -65,13 +65,14 @@ async def main():
             (r"/", MainHandler),
             (r"/ws", WSHandler),
         ],
-        template_path="templates",
+        template_path="static",
+        static_path="static",
     )
 
     app.listen(8888)
     print("Server Tornado avviato su http://localhost:8888")
 
-    #asyncio.create_task(mqtt_listener())
+    asyncio.create_task(mqtt_listener())
 
     await asyncio.Event().wait()
 
