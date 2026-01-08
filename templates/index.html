@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <title>Sensor Dashboard</title>
+    </head>
+    <body>
+        <script>
+            // Ad ogni volta che la pagina viene mostrata viene selezionata la categoria col valore "", cioè nessuno
+            // Così ogni volta che torno alla pagina di selezione non appare selezionata nessuna categoria che dovrebbe reindirizzare ad un'altra pagina html
+            window.addEventListener("pageshow", () => {
+                document.getElementById("category").value = "";
+            });
+        </script>
+        <h1> Scegli il sensore </h1>
+        <form method="get">
+            <!-- Inserisco la tendina per scegliere le categorie -->
+            Seleziona un sensore:
+            <select id="category" name="category" onchange="this.form.submit()">
+                <option value="" selected>Nessuno</option>
+                <option value="temperature">Temperature</option>
+                <option value="humidity">Humidity</option>
+                <option value="pressure">Pressure</option>
+            </select>
+        </form>
+    </body>
+</html>
