@@ -3,7 +3,7 @@ from pymongo import AsyncMongoClient
 
 #MONGO_URL = "mongodb://localhost:27017"
 MONGO_URL = "mongodb+srv://cesarenappa_db_user:ogGknHucqHIWqAhi@apipublishers.qzfrfsp.mongodb.net/?appName=APIpublishers"
-DB_NAME = "todo_app"
+DB_NAME = "tournament"
 COOKIE_SECRET = "super_secret_key_change_me"
 PORT = 8888
 
@@ -11,5 +11,4 @@ PORT = 8888
 client = AsyncMongoClient(MONGO_URL)
 db = client[DB_NAME]
 
-users = db["users"]
-tasks = db["tasks"]
+matches = db["matches"]

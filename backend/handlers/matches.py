@@ -1,11 +1,11 @@
-import tornado.escape
-from bson import ObjectId
-from backend.db import tasks
-from datetime import datetime
+from Matches.backend.db import matches
+from Matches.Matches.backend import BaseHandler
 
-class MatchHandler:
+
+class MatchHandler(BaseHandler):
     async def get(self):
-        cursor = tasks.find()
+        cursor = matches.find()
+        print("c",cursor)
         out = []
         async for t in cursor:
             out.append({
@@ -17,4 +17,7 @@ class MatchHandler:
                 "result": t["result"]
             })
 
+        print(out)
+
         return self.write_json({"items": out})
+

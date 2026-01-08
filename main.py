@@ -5,17 +5,14 @@ import asyncio
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
-
-import json
 import logging
 
 import tornado.web
 import tornado.websocket
-import aiomqtt
-from backend.handlers.matches import MatchHandler
+from Matches.backend import MatchHandler
 
 BROKER = "test.mosquitto.org"
-TOPIC = "cesare/matches/#"
+#TOPIC = "volley/matches/#"
 
 clients = set()
 
@@ -35,6 +32,8 @@ class WSHandler(tornado.websocket.WebSocketHandler):
         print("WebSocket chiuso")
         clients.remove(self)
 
+
+'''
 async def mqtt_listener():
 
     logging.info("Connessione al broker MQTT...")
@@ -55,7 +54,7 @@ async def mqtt_listener():
             # inoltro ai client WebSocket
             for c in list(clients):
                 c.write_message(ws_message)
-
+'''
 
 async def main():
     logging.basicConfig(level=logging.INFO)
@@ -64,15 +63,16 @@ async def main():
         [
             (r"/", MainHandler),
             (r"/ws", WSHandler),
+            (r"/api/matches", MatchHandler)
         ],
-        template_path="static",
-        static_path="static",
+        template_path="../static",
+        static_path="../static",
     )
 
     app.listen(8888)
     print("Server Tornado avviato su http://localhost:8888")
 
-    asyncio.create_task(mqtt_listener())
+    #asyncio.create_task(mqtt_listener())
 
     await asyncio.Event().wait()
 
