@@ -1,5 +1,5 @@
 from Matches.backend.db import matches
-from Matches.Matches.backend import BaseHandler
+from Matches.backend.handlers.auth import BaseHandler
 
 
 class MatchHandler(BaseHandler):

@@ -9,7 +9,7 @@ import logging
 
 import tornado.web
 import tornado.websocket
-from Matches.backend import MatchHandler
+from Matches.backend.handlers.matches import MatchHandler
 
 BROKER = "test.mosquitto.org"
 #TOPIC = "volley/matches/#"
@@ -65,8 +65,8 @@ async def main():
             (r"/ws", WSHandler),
             (r"/api/matches", MatchHandler)
         ],
-        template_path="../static",
-        static_path="../static",
+        template_path="./static",
+        static_path="./static",
     )
 
     app.listen(8888)
