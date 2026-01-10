@@ -55,20 +55,21 @@ def match_simulation(w):
                 result.append("")
     print(result)
 
-teams = [ {"name": "Sir Safety Perugia", "weight": 53},
-          {"name": "Itas Trentino", "weight": 52},
-          {"name": "Cucine Lube Civitanova", "weight": 52},
-          {"name": "Modena Volley", "weight": 51},
-          {"name": "Allianz Milano", "weight": 50},
-          {"name": "Gas Sales Bluenergy Piacenza", "weight": 51},
-          {"name": "Vero Volley Monza", "weight": 49},
-          {"name": "Pallavolo Padova", "weight": 48},
-          {"name": "Cisterna Volley", "weight": 48},
-          {"name": "Rana Verona", "weight": 50},
-          {"name": "Taranto Prisma", "weight": 47},
-          {"name": "Revivre Cantù", "weight": 47},
-          {"name": "Pallavolo Cuneo", "weight": 48},
-          {"name": "Brescia Volley", "weight": 47}
+teams = [
+    {"name": "Sir Safety Perugia", "weight": 53},
+    {"name": "Itas Trentino", "weight": 52},
+    {"name": "Cucine Lube Civitanova", "weight": 52},
+    {"name": "Modena Volley", "weight": 51},
+    {"name": "Allianz Milano", "weight": 50},
+    {"name": "Gas Sales Bluenergy Piacenza", "weight": 51},
+    {"name": "Vero Volley Monza", "weight": 49},
+    {"name": "Pallavolo Padova", "weight": 48},
+    {"name": "Cisterna Volley", "weight": 48},
+    {"name": "Rana Verona", "weight": 50},
+    {"name": "Taranto Prisma", "weight": 47},
+    {"name": "Revivre Cantù", "weight": 47},
+    {"name": "Pallavolo Cuneo", "weight": 48},
+    {"name": "Brescia Volley", "weight": 47}
 ]
 
 match_simulation([53, 47])
