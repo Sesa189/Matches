@@ -1,8 +1,43 @@
 import time
 import random
 
-def match_simulation(w):
+def percentage_calculator(team1, team2):
+    # Questa funzione serve ad assicurarsi che le due percentuali di vittoria siano 100 se sommate
+
+    if team1 + team2 <= 100: # Se la somma è minore di 100
+        # Faccio la differenza tra le due percentuali
+        diff = (team1 if team1 >= team2 else team2) - (team2 if team1 >= team2 else team1)
+        # Aggiungo metà della differenza ad entrambe le percentuali
+        team1 += team1 + diff/2
+        team2 += team2 + diff/2
+        # Ottengo il totale
+        tot = team1 + team2
+        while tot <= 100: # Finché il totale è minore di 100 aggiungo ogni volta 1 ad entrambe le percentuali
+            team1 += 1
+            team2 += 1
+            tot = team1 + team2
+
+    if team1 + team2 >= 100: # Se la somma è maggiore di 100
+        tot = team1 + team2
+        while tot >= 100: # Finché il totale è maggiore di 100 tolgo ogni volta 1 ad entrambe le percentuali
+            team1 -= 1
+            team2 -= 1
+            tot = team1 + team2
+        if tot != 100: # Se il totale non è ancora uguale a 100
+            # Calcolo la differenza
+            diff = (team1 if team1 >= team2 else team2) - (team2 if team1 >= team2 else team1)
+            # Aggiungo metà della differenza ad entrambe le percentuali
+            team1 += team1 + diff/2
+            team2 += team2 + diff/2
+    return [team1, team2]
+
+
+def match_simulation(team1, team2):
+    # Richiamo la funzione per rendere le due percentuali uguali a 100 se sommate
+    w = percentage_calculator(team1, team2)
+    # La prima battuta viene assegnata randomicamente (50/50, come il lancio della moneta delle vere partite)
     ball = random.randint(1,2)
+    # Inizializzazione di tutte le variabili
     win = False
     point1 = 0
     set1 = 0
@@ -55,21 +90,21 @@ def match_simulation(w):
                 result.append("")
     print(result)
 
-teams = [
-    {"name": "Sir Safety Perugia", "weight": 53},
-    {"name": "Itas Trentino", "weight": 52},
-    {"name": "Cucine Lube Civitanova", "weight": 52},
-    {"name": "Modena Volley", "weight": 51},
-    {"name": "Allianz Milano", "weight": 50},
-    {"name": "Gas Sales Bluenergy Piacenza", "weight": 51},
-    {"name": "Vero Volley Monza", "weight": 49},
-    {"name": "Pallavolo Padova", "weight": 48},
-    {"name": "Cisterna Volley", "weight": 48},
-    {"name": "Rana Verona", "weight": 50},
-    {"name": "Taranto Prisma", "weight": 47},
-    {"name": "Revivre Cantù", "weight": 47},
-    {"name": "Pallavolo Cuneo", "weight": 48},
-    {"name": "Brescia Volley", "weight": 47}
-]
+teams = {
+    "Sir Safety Perugia" : 53,
+    "Itas Trentino" : 52,
+    "Cucine Lube Civitanova" : 52,
+    "Modena Volley" : 51,
+    "Allianz Milano" : 50,
+    "Gas Sales Bluenergy Piacenza" : 51,
+    "Vero Volley Monza" : 49,
+    "Pallavolo Padova" : 48,
+    "Cisterna Volley" : 48,
+    "Rana Verona" : 50,
+    "Taranto Prisma" : 47,
+    "Revivre Cantù" : 47,
+    "Pallavolo Cuneo" : 48,
+    "Brescia Volley" : 47
+}
 
-match_simulation([53, 47])
+match_simulation(teams["Sir Safety Perugia"],teams["Brescia Volley"])
