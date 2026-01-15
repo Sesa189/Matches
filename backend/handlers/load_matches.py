@@ -2,7 +2,7 @@ from Matches.backend.db import matches
 from Matches.backend.handlers.auth import BaseHandler
 
 
-class MatchHandler(BaseHandler):
+class LoadMatchHandler(BaseHandler):
     async def get(self):
         cursor = matches.find()
         print("c",cursor)
@@ -17,7 +17,5 @@ class MatchHandler(BaseHandler):
                 "result": t["result"]
             })
 
-        print(out)
-
-        return self.write_json({"items": out})
+        return self.write_json({"data": out})
 

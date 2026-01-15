@@ -1,16 +1,37 @@
+const ws = new WebSocket("ws://localhost:8888/ws");
+
+ws.onopen = () => {
+    console.log("WebSocket aperto");
+};
+
+ws.onmessage = (event) => {
+    const msg = JSON.parse(event.data);
+    console.log("RAW MESSAGE:", event.data);
+    console.log("PARSED:", msg);
+
+    // gestisce solo i messaggi matches
+    if (msg.type !== "matches") return;
+
+    console.log("Ricevute partite:", msg.data.length);
+    renderMatches(msg.data);
+};
+
+ws.onclose = () => {
+    console.log("WebSocket chiuso");
+};
+
+ws.onerror = (error) => {
+    console.error("Errore WebSocket:", error);
+};
+
 console.log("caricato app");
 
-async function loadTasks() {
-    const res = await fetch("/api/matches", { credentials: "include" });
-
-    const data = await res.json();
-    console.log(data.items);
+// 👇 SOLO rendering (WebSocket-only)
+function renderMatches(matches) {
     const list = document.getElementById("matchList");
     list.innerHTML = "";
 
-    console.log(data);
-
-    data.items.forEach(t => {
+    matches.forEach(t => {
         const li = document.createElement("li");
 
         // Team1
@@ -33,33 +54,14 @@ async function loadTasks() {
         const dateSpan = document.createElement("span");
         dateSpan.textContent = t.date;
 
-        // Area icone
-        const actions = document.createElement("div");
-
-
-        /*
-        🗑 icona
-        const del = document.createElement("button");
-        del.className = "icon-btn";
-        del.innerHTML = '<i class="fa-solid fa-trash" title="Elimina"></i>';
-        del.onclick = () => deleteTask(t.id);
-        */
-
         li.appendChild(team1Span);
         li.appendChild(team2Span);
         li.appendChild(timeSpan);
         li.appendChild(resultSpan);
         li.appendChild(dateSpan);
+
         list.appendChild(li);
-        console.log("Task:", t);
-
-        console.log("✅ 6. Caricamento completato!");
     });
+
+    console.log("Caricamento completato!");
 }
-
-/*
-if (location.pathname.endsWith("index.html"))
-    loadTasks();
-*/
-
-document.addEventListener('DOMContentLoaded', loadTasks);

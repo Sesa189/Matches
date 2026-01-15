@@ -107,4 +107,4 @@ teams = {
     "Brescia Volley" : 47
 }
 
-match_simulation(teams["Sir Safety Perugia"],teams["Brescia Volley"])
+match_simulation(teams["Brescia Volley"],teams["Sir Safety Perugia"])

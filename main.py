@@ -6,10 +6,10 @@ if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 import logging
-
+from Matches.backend.db import matches
 import tornado.web
 import tornado.websocket
-from Matches.backend.handlers.matches import MatchHandler
+from Matches.backend.handlers.load_matches import LoadMatchHandler
 
 BROKER = "test.mosquitto.org"
 #TOPIC = "volley/matches/#"
@@ -24,13 +24,32 @@ class WSHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
 
-    def open(self):
+    async def open(self):
         print("WebSocket aperto")
         clients.add(self)
+        await self.load_matches()
 
-    def on_close(self):
+    async def on_close(self):
         print("WebSocket chiuso")
         clients.remove(self)
+
+    async def load_matches(self):
+        cursor = matches.find()
+        print("c", cursor)
+        out = []
+        async for t in cursor:
+            out.append({
+                "id": str(t["_id"]),
+                "team1": t["team1"],
+                "team2": t["team2"],
+                "date": t["date"],
+                "time": t["time"],
+                "result": t["result"]
+            })
+
+        print(out)
+
+        return self.write_message({"type":"matches","items": out})
 
 
 '''
@@ -62,8 +81,7 @@ async def main():
     app = tornado.web.Application(
         [
             (r"/", MainHandler),
-            (r"/ws", WSHandler),
-            (r"/api/matches", MatchHandler)
+            (r"/ws", WSHandler)
         ],
         template_path="./static",
         static_path="./static",
