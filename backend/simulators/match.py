@@ -48,6 +48,7 @@ def match_simulation(team1, team2):
     result = [""]
     c = 0
     s_end = False
+    winner = 0
 
     while win == False: #Finché nessuno ha ancora vinto
         #Aggiunta randomica di punti basandosi su probabilità
@@ -85,26 +86,13 @@ def match_simulation(team1, team2):
             s_end = False
             if set1 == 3 or set2 == 3: #Una delle due squadre raggiunge 3 set e vince la partita
                 win = True
+                if set1 == 3:
+                    winner = 1
+                elif set2 ==  3:
+                    winner = 2
             else: #Nessuno ha ancora vinto, aggiungo un set e continuo
                 c += 1
                 result.append("")
-    print(result)
-
-teams = {
-    "Sir Safety Perugia" : 53,
-    "Itas Trentino" : 52,
-    "Cucine Lube Civitanova" : 52,
-    "Modena Volley" : 51,
-    "Allianz Milano" : 50,
-    "Gas Sales Bluenergy Piacenza" : 51,
-    "Vero Volley Monza" : 49,
-    "Pallavolo Padova" : 48,
-    "Cisterna Volley" : 48,
-    "Rana Verona" : 50,
-    "Taranto Prisma" : 47,
-    "Revivre Cantù" : 47,
-    "Pallavolo Cuneo" : 48,
-    "Brescia Volley" : 47
-}
-
-match_simulation(teams["Brescia Volley"],teams["Sir Safety Perugia"])
+    print(f"risultato: {result}")
+    print(f"vincitore:{winner}")
+    return winner

@@ -9,7 +9,6 @@ import logging
 from Matches.backend.db import matches
 import tornado.web
 import tornado.websocket
-from Matches.backend.handlers.load_matches import LoadMatchHandler
 
 BROKER = "test.mosquitto.org"
 #TOPIC = "volley/matches/#"
@@ -44,12 +43,13 @@ class WSHandler(tornado.websocket.WebSocketHandler):
                 "team2": t["team2"],
                 "date": t["date"],
                 "time": t["time"],
-                "result": t["result"]
+                "result": t["result"],
+                "state": t["state"]
             })
 
         print(out)
 
-        return self.write_message({"type":"matches","items": out})
+        return self.write_message({"type":"matches","data": out})
 
 
 '''

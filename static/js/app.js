@@ -14,6 +14,7 @@ ws.onmessage = (event) => {
 
     console.log("Ricevute partite:", msg.data.length);
     renderMatches(msg.data);
+    renderMatches(msg.data);
 };
 
 ws.onclose = () => {
@@ -31,34 +32,29 @@ function renderMatches(matches) {
     const list = document.getElementById("matchList");
     list.innerHTML = "";
 
-    matches.forEach(t => {
+    matches.forEach(m => {
         const li = document.createElement("li");
+        li.className = "match";
 
-        // Team1
-        const team1Span = document.createElement("span");
-        team1Span.textContent = t.team1;
+        li.innerHTML = `
+            <div class="match-top">
+                <span class="match-status" data-state="${m.state.toLowerCase()}">${m.state}</span>
+                <span class="match-date">${m.date}</span>
+            </div>
 
-        // Team2
-        const team2Span = document.createElement("span");
-        team2Span.textContent = t.team2;
+            <div class="match-main">
+                <div class="match-teams">
+                    ${m.team1} vs ${m.team2}
+                </div>
+                <div class="match-score">
+                    ${m.result}
+                </div>
+            </div>
 
-        // Tempo
-        const timeSpan = document.createElement("span");
-        timeSpan.textContent = t.time;
-
-        // Risultato
-        const resultSpan = document.createElement("span");
-        resultSpan.textContent = t.result;
-
-        // Data
-        const dateSpan = document.createElement("span");
-        dateSpan.textContent = t.date;
-
-        li.appendChild(team1Span);
-        li.appendChild(team2Span);
-        li.appendChild(timeSpan);
-        li.appendChild(resultSpan);
-        li.appendChild(dateSpan);
+            <div class="match-bottom">
+                ⏱ ${m.time}
+            </div>
+        `;
 
         list.appendChild(li);
     });

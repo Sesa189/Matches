@@ -12,3 +12,4 @@ client = AsyncMongoClient(MONGO_URL)
 db = client[DB_NAME]
 
 matches = db["matches"]
+

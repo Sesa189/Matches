@@ -1,15 +1,11 @@
-/* ============================
-   RESET
-=============================*/
+/* ===== RESET ===== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* ============================
-   BODY
-=============================*/
+/* ===== BODY ===== */
 body {
     background: #eef1f6;
     font-family: Arial, Helvetica, sans-serif;
@@ -18,227 +14,123 @@ body {
     padding-top: 50px;
 }
 
-/* ============================
-   CONTAINER
-=============================*/
-.container_login_register {
-    width: 360px;
-    background: white;
-    padding: 25px 22px;
-    border-radius: 12px;
-    box-shadow: 0 6px 25px rgba(0,0,0,0.1);
-}
-
+/* ===== CONTAINER ===== */
 .container_chat {
     width: 960px;
-    background: white;
-    padding: 25px 22px;
+    background: #fff;
+    padding: 25px;
     border-radius: 12px;
     box-shadow: 0 6px 25px rgba(0,0,0,0.1);
 }
 
-/* ============================
-   TITOLI
-=============================*/
+/* ===== TITOLO ===== */
 h2 {
     text-align: center;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     color: #222;
 }
 
-/* ============================
-   INPUT E BUTTON
-=============================*/
-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 14px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 15px;
-}
-
-input:focus {
-    outline: none;
-    border-color: #007bff;
-}
-
-button {
-    width: 100%;
-    padding: 11px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 15px;
-    cursor: pointer;
-    margin-bottom: 12px;
-    transition: background 0.2s;
-}
-
-button:hover {
-    background: #0056d2;
-}
-
-/* Logout */
-.logout {
-    background: #dc3545 !important;
-}
-.logout:hover {
-    background: #b52b36 !important;
-}
-
-/* ============================
-   LISTA TASKS
-=============================*/
-ul {
+/* ===== LISTA ===== */
+#matchList {
     list-style: none;
-    margin-top: 15px;
 }
 
-li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
+/* ===== CARD PARTITA ===== */
+/*#matchList li {
     background: #fafafa;
     border: 1px solid #ddd;
-    padding: 12px;
     border-radius: 8px;
-    margin-bottom: 10px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
     font-size: 15px;
+}*/
+/* CARD PARTITA */
+.match {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
 }
 
-li.done {
-    background: #d7ffd7;
-    text-decoration: line-through;
-    color: #2e7d32;
-}
-
-/* ============================
-   CONTENITORE ICONE
-=============================*/
-li div {
+/* Riga superiore: stato + data */
+.match-top {
     display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: flex-end;
-    flex-shrink: 0;
+    justify-content: flex-start;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 10px;
+    gap: 6px; /* distanza tra stato e data */
+    align-items: center; /* allinea verticalmente testo e emoji */
 }
 
-/* Icon buttons */
-.icon-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px;
-    font-size: 18px;
+/* Data: pallino tra stato e data */
+.match-date::before {
+    content: "•"; /* solo il pallino */
+    margin: 0 6px; /* spazio prima e dopo il pallino */
+    color: #666;
 }
 
-.icon-btn i {
-    pointer-events: none;
-}
-
-.icon-btn:hover {
-    opacity: 0.7;
-}
-
-/* ============================
-   LINK
-=============================*/
-.link {
+/* Stato generico */
+.match-status {
+    font-weight: bold;
+    text-transform: uppercase;
     color: #007bff;
-    text-decoration: none;
+    display: inline-flex;  /* permette di allineare emoji e testo */
+    align-items: center;   /* centra verticalmente */
+    gap: 4px;              /* spazio tra emoji e testo */
+}
+
+/* Stato LIVE: rosso con emoji cerchio davanti */
+.match-status[data-state="live"] {
+    color: red;
+}
+
+/* Emoji cerchio davanti a LIVE */
+.match-status[data-state="live"]::before {
+    content: '🔴';          /* cerchio rosso */
+    display: inline-block;  /* necessario per vertical-align */
+    vertical-align: middle; /* centra emoji con testo */
+    font-size: 14px;        /* dimensione emoji */
+}
+
+
+/* Riga centrale: squadre + risultato */
+.match-main {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+/* Squadre */
+.match-teams {
     font-weight: bold;
 }
-.link:hover {
-    text-decoration: underline;
+
+/* Risultato */
+.match-score {
+    background: #007bff;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 16px;
 }
 
-.text-center {
-    text-align: center;
-    margin-top: 10px;
-    font-size: 14px;
-}
-li div {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: flex-end;
-    flex-shrink: 0;
-}
-/* Colore icone task */
-.icon-btn i {
-    color: #333 !important;     /* colore scuro ben visibile */
-    font-size: 18px;
+/* Riga inferiore: durata */
+.match-bottom {
+    font-size: 13px;
+    color: #777;
 }
 
-/* Se una task è completata, l'icona ✓ diventa verde
-li.done .icon-btn i.fa-check {
-    color: #28a745 !important;
-}*/
-
-/* Icona elimina sempre rossa */
-.icon-btn i.fa-trash {
-    color: #dc3545 !important;
-}
-
-/* Icona ripristino (↺) arancione
-.icon-btn i.fa-rotate-left {
-    color: #ff9800 !important;
-}*/
-
-li.current {
-    background-color: #C7F2DF;
-}
-
-#taskList {
-  padding: 0;
-  margin: 0;
-}
-
-#taskList li {
-  list-style: none;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 8px;
-  display: flex;
-  flex-direction: column;   /* impila gli elementi in colonna */
-  align-items: flex-start;  /* allinea a sinistra */
-  gap: 6px;                 /* spazio verticale tra email, testo e icona */
-  box-sizing: border-box;
-  width: 100%;
-  word-break: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-}
-
-#taskList .email {
-  flex: 0 0 200px;        /* larghezza fissa di 200px */
-  max-width: 200px;       /* non supera 200px */
-  overflow-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
-  font-weight: bold;
-  color: #222;
-}
-
-/* Messaggio: spazio massimo */
-#taskList .text {
-  flex: 1;                /* prende lo spazio rimanente */
-  max-width: calc(100% - 220px); /* calcola spazio massimo */
-  overflow-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
-  color: #333;
-}
-
-/* Azioni (icone) */
-#taskList .actions {
-  margin-left: auto;
-  display: flex;
-  gap: 6px;
-  align-items: center;
+/* Risultato più evidente */
+#matchList span:nth-child(4) {
+    font-weight: bold;
+    color: #007bff;
 }
