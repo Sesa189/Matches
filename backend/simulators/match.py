@@ -32,7 +32,7 @@ def percentage_calculator(team1, team2):
     return [team1, team2]
 
 
-def match_simulation(team1, team2):
+def match_simulation(team1, team2, real_time):
     # Richiamo la funzione per rendere le due percentuali uguali a 100 se sommate
     w = percentage_calculator(team1, team2)
     # La prima battuta viene assegnata randomicamente (50/50, come il lancio della moneta delle vere partite)
@@ -49,6 +49,12 @@ def match_simulation(team1, team2):
     c = 0
     s_end = False
     winner = 0
+    events = []
+
+    if real_time:
+        pass # Fare in modo che la partita sia gestita coi tempi
+    else:
+        pass # Partita automatica
 
     while win == False: #Finché nessuno ha ancora vinto
         #Aggiunta randomica di punti basandosi su probabilità
@@ -95,4 +101,23 @@ def match_simulation(team1, team2):
                 result.append("")
     print(f"risultato: {result}")
     print(f"vincitore:{winner}")
-    return winner
+    return winner, result, events
+
+teams = {
+    "Sir Safety Perugia" : 53,
+    "Itas Trentino" : 52,
+    "Cucine Lube Civitanova" : 52,
+    "Modena Volley" : 51,
+    "Allianz Milano" : 50,
+    "Gas Sales Bluenergy Piacenza" : 51,
+    "Vero Volley Monza" : 49,
+    "Pallavolo Padova" : 48,
+    "Cisterna Volley" : 48,
+    "Rana Verona" : 50,
+    "Taranto Prisma" : 47,
+    "Revivre Cantù" : 47,
+    "Pallavolo Cuneo" : 48,
+    "Brescia Volley" : 47,
+    "Emma Villas Aubay Siena" : 45,
+    "Delta Group Porto Viro" : 44
+}

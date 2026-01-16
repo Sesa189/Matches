@@ -1,24 +1,7 @@
 import Matches.backend.simulators.match as match
 import random
-
-teams = {
-    "Sir Safety Perugia" : 53,
-    "Itas Trentino" : 52,
-    "Cucine Lube Civitanova" : 52,
-    "Modena Volley" : 51,
-    "Allianz Milano" : 50,
-    "Gas Sales Bluenergy Piacenza" : 51,
-    "Vero Volley Monza" : 49,
-    "Pallavolo Padova" : 48,
-    "Cisterna Volley" : 48,
-    "Rana Verona" : 50,
-    "Taranto Prisma" : 47,
-    "Revivre Cantù" : 47,
-    "Pallavolo Cuneo" : 48,
-    "Brescia Volley" : 47,
-    "Emma Villas Aubay Siena" : 45,
-    "Itas Trentino II" : 44
-}
+import Matches.backend.db as db
+import asyncio
 
 ottavi = {}
 ottavi_w = {}
@@ -27,68 +10,64 @@ quarti_w = {}
 semifinali = {}
 semifinali_w = {}
 finale= {}
-fianle_w = None
+finale_w = {}
 c = 0
 
-for x in range(8):
-    c += 1
-    team1 = random.choice(list(teams.keys()))
-    team2 = team1
-    while team1 == team2:
-        team2 = random.choice(list(teams.keys()))
+async def clear_tournament_results():
+    result = await db.tournament_results.delete_many({})
 
-    print(f"\n{team1} vs {team2}")
-    winner = match.match_simulation(teams[team1], teams[team2])
+asyncio.run(clear_tournament_results())
 
-    if winner == 1:
-        ottavi_w[team1] = teams[team1]
-    elif winner == 2:
-        ottavi_w[team2] = teams[team2]
+async def round(pre, dic, rng):
+    post = {}
+    c = 0
+    stage = ""
+    if rng == 8:
+        stage = "ottavi"
+    elif rng == 4:
+        stage = "quarti"
+    elif rng == 2:
+        stage = "semifinali"
+    elif rng == 1:
+        stage = "finale"
+    for x in range(rng):
+        c += 1
+        team1 = random.choice(list(pre.keys()))
+        team2 = team1
+        while team1 == team2:
+            team2 = random.choice(list(pre.keys()))
 
-    teams.pop(team1)
-    teams.pop(team2)
+        print(f"\n{team1} vs {team2}")
+        winner, result, events = match.match_simulation(pre[team1], pre[team2], True)
 
-    ottavi[c] = [team1, team2]
+        if winner == 1:
+            post[team1] = pre[team1]
+        elif winner == 2:
+            post[team2] = pre[team2]
 
-print(f"winners : {ottavi_w}")
+        pre.pop(team1)
+        pre.pop(team2)
 
-for x in ottavi:
-    c += 1
-    team1 = random.choice(list(ottavi_w.keys()))
-    team2 = team1
-    while team1 == team2:
-        team2 = random.choice(list(ottavi_w.keys()))
+        if winner == 1:
+            winner_team = team1
+        elif winner == 2:
+            winner_team = team2
 
-    print(f"\n{team1} vs {team2}")
-    winner = match.match_simulation(ottavi_w[team1], ottavi_w[team2])
+        await db.tournament_results.insert_one({"stage": stage, "team1": team1, "team2": team2, "risultato" : result, "eventi" : events,  "winner": winner_team})
 
-    if winner == 1:
-        quarti_w[team1] = ottavi_w[team1]
-    elif winner == 2:
-        quarti_w[team2] = ottavi_w[team2]
+        dic[c] = [team1, team2]
 
-    quarti[c] = [team1, team2]
+    print(f"winners : {post}")
+    return post
 
-print(quarti_w)
+async def run_tournament():
+    print("\n-----------ottavi-------------")
+    ottavi = await round(match.teams, ottavi_w, 8)
+    print("\n-----------quarti-------------")
+    quarti = await round(ottavi, quarti_w, 4)
+    print("\n-----------semifinali-------------")
+    semifinali = await round(quarti, semifinali_w, 2)
+    print("\n-----------finale-------------")
+    finale = await round(semifinali, finale_w, 1)
 
-for x in quarti:
-    c += 1
-    team1 = random.choice(list(quarti_w.keys()))
-    team2 = team1
-    while team1 == team2:
-        team2 = random.choice(list(quarti_w.keys()))
-
-    print(f"\n{team1} vs {team2}")
-    winner = match.match_simulation(quarti_w[team1], quarti_w[team2])
-
-    if winner == 1:
-        semifinali_w[team1] = quarti_w[team1]
-    elif winner == 2:
-        semifinali_w[team2] = quarti_w[team2]
-
-    semifinali[c] = [team1, team2]
-
-print(semifinali_w)
-
-
-
+asyncio.run(run_tournament())
