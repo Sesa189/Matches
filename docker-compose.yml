@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # MongoDB
+  mongodb:
+    image: mongo:latest
+    container_name: volleyball_mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - volleyball_network
+    restart: unless-stopped
+
+  # Applicazione Python
+  app:
+    build: .
+    container_name: volleyball_app
+    ports:
+      - "8888:8888"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URL=mongodb://admin:password123@mongodb:27017
+    volumes:
+      - ./Matches:/app/Matches
+      - ./static:/app/static
+    networks:
+      - volleyball_network
+    restart: unless-stopped
+
+networks:
+  volleyball_network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
