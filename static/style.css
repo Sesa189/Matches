@@ -231,3 +231,66 @@ h2 {
 }
 
 
+/* ===== MENU GIORNATE ===== */
+#giornata-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.giornata-label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Select con massima specificità */
+#giornata-container .giornata-select,
+select.giornata-select {
+    padding: 10px 18px !important;
+    padding-right: 35px !important;
+    border-radius: 20px !important;
+    border: 1px solid #007bff !important;
+    background-color: white !important;
+    color: #007bff !important;
+    font-size: 14px !important;
+    font-weight: bold !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    outline: none !important;
+    min-width: 180px !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23007bff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    background-size: 18px !important;
+}
+
+/* Hover select con massima specificità */
+#giornata-container .giornata-select:hover,
+select.giornata-select:hover {
+    background-color: #e8f1ff !important;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23007bff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+}
+
+/* Focus select con massima specificità */
+#giornata-container .giornata-select:focus,
+select.giornata-select:focus {
+    border-color: #0056b3 !important;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3) !important;
+    background-color: white !important;
+}
+
+/* Opzioni del menu a tendina */
+#giornata-container .giornata-select option,
+select.giornata-select option {
+    padding: 10px !important;
+    background: white !important;
+    color: #333 !important;
+    font-weight: normal !important;
+}

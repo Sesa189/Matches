@@ -42,6 +42,10 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("index.html")
 
+class MatchDetailHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.render("match.html")
+
 class WSHandler(tornado.websocket.WebSocketHandler):
     def check_origin(self, origin):
         return True
@@ -167,7 +171,8 @@ async def main():
     app = tornado.web.Application(
         [
             (r"/", MainHandler),
-            (r"/ws", WSHandler)
+            (r"/ws", WSHandler),
+            (r"/match.html", MatchDetailHandler),
         ],
         template_path="./static",
         static_path="./static",

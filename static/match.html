@@ -4,22 +4,317 @@
     <meta charset="UTF-8">
     <title>Dettaglio Partita</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* Stili specifici per la pagina di dettaglio */
+        .back-button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: 1px solid #007bff;
+            background: white;
+            color: #007bff;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .back-button:hover {
+            background: #e8f1ff;
+        }
+
+        .back-button:active {
+            transform: scale(0.96);
+        }
+
+        /* Header della partita */
+        .match-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .match-header h2 {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .match-status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .match-status-badge.live {
+            background: #dc3545;
+            animation: pulse 2s infinite;
+        }
+
+        .match-status-badge.finished {
+            background: #28a745;
+        }
+
+        .match-status-badge.scheduled {
+            background: #6c757d;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .match-status-badge.live::before {
+            content: '🔴 ';
+        }
+
+        /* Griglia principale */
+        .match-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .match-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card generica */
+        .info-card {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .info-card h3 {
+            color: #007bff;
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        .info-value {
+            color: #222;
+        }
+
+        /* Risultato grande */
+        .score-display {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .score-display h3 {
+            color: white;
+            font-size: 16px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .score-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 8px;
+        }
+
+        /* Lista eventi */
+        .events-container {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .events-container h3 {
+            color: #007bff;
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 8px;
+        }
+
+        .events-list {
+            list-style: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .event-item {
+            background: white;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .event-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .event-item::before {
+            content: '▶';
+            color: #007bff;
+            font-size: 10px;
+        }
+
+        .no-events {
+            text-align: center;
+            color: #999;
+            padding: 30px;
+            font-style: italic;
+        }
+
+        /* Vincitore */
+        .winner-banner {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .winner-banner::before {
+            content: '🏆 ';
+            font-size: 32px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: #999;
+            font-size: 18px;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+    </style>
 </head>
 <body>
 
 <div class="container_chat">
-    <button onclick="history.back()">⬅ Torna indietro</button>
+    <button class="back-button" onclick="history.back()">⬅ Torna indietro</button>
 
-    <h2 id="match-title">Partita</h2>
+    <div id="loading" class="loading">Caricamento partita</div>
 
-    <div id="match-details">
-        <p><strong>Squadre:</strong> <span id="teams"></span></p>
-        <p><strong>Data:</strong> <span id="date"></span></p>
-        <p><strong>Risultato:</strong> <span id="result"></span></p>
-        <p><strong>Stato:</strong> <span id="state"></span></p>
+    <div id="match-content" style="display: none;">
+        <div class="match-header">
+            <h2 id="match-title">Caricamento...</h2>
+            <span id="match-status-badge" class="match-status-badge"></span>
+        </div>
+
+        <div id="winner-banner" class="winner-banner" style="display: none;"></div>
+
+        <div class="score-display">
+            <h3>RISULTATO</h3>
+            <div id="score-value" class="score-value">- : -</div>
+        </div>
+
+        <!-- Griglia informazioni -->
+        <div class="match-grid">
+            <!-- Card info partita -->
+            <div class="info-card">
+                <h3>📋 Informazioni Partita</h3>
+                <div class="info-row">
+                    <span class="info-label">Categoria:</span>
+                    <span class="info-value" id="category">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Data:</span>
+                    <span class="info-value" id="date">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Tempo:</span>
+                    <span class="info-value" id="time">00:00</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Stato:</span>
+                    <span class="info-value" id="state">-</span>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <h3>👥 Squadre</h3>
+                <div class="info-row">
+                    <span class="info-label">Casa:</span>
+                    <span class="info-value" id="team1">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Ospite:</span>
+                    <span class="info-value" id="team2">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="events-container">
+            <h3>📺 Eventi della Partita</h3>
+            <ul id="events-list" class="events-list">
+                <li class="no-events">Nessun evento disponibile</li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <script src="/static/js/match.js"></script>
+
 </body>
 </html>

@@ -81,8 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
             matchId: `finale_1`
         });
 
-
-
         console.log(`Segnaposto creati: ${torneoMatches.length} torneo, ${campionatoMatches.length} campionato`);
     }
 
@@ -166,14 +164,14 @@ document.addEventListener("DOMContentLoaded", () => {
     function filtraEVisualizza() {
         let matches = currentView === "torneo" ? torneoMatches : campionatoMatches;
 
-        // Filtra per fase solo se currentFase è selezionata (solo per torneo)
+        // Filtra per fase (torneo usa 'number', campionato usa 'stage' come giornata)
         if (currentView === "torneo" && currentFase !== null) {
             matches = matches.filter(m => m.number === currentFase);
         }
 
-        // Filtra per giornata solo se currentGiornata è selezionata (solo per campionato)
+        // Filtra per giornata (usa il campo 'stage' che contiene il numero della giornata)
         if (currentView === "campionato" && currentGiornata !== null) {
-            matches = matches.filter(m => m.giornata === currentGiornata);
+            matches = matches.filter(m => m.stage === currentGiornata);
         }
 
         renderMatches(matches);
@@ -222,7 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
             Object.entries(msg.data).forEach(([giornata, partite]) => {
                 partite.forEach(([team1, team2], index) => {
                     campionatoMatches.push({
-                        giornata: parseInt(giornata),
+                        stage: parseInt(giornata), // Usa 'stage' invece di 'giornata'
                         team1,
                         team2,
                         date: `Giornata ${giornata}`,
@@ -234,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
             });
 
-            // Se l’utente è già in vista campionato, aggiorna
+            // Se l'utente è già in vista campionato, aggiorna
             if (currentView === "campionato") {
                 filtraEVisualizza();
             }
@@ -252,8 +250,12 @@ document.addEventListener("DOMContentLoaded", () => {
         if (msg.data) {
             msg.data.forEach(partita => {
                 const index = matchesArray.findIndex(m => m.team1 === partita.team1 && m.team2 === partita.team2);
-                if (index !== -1) matchesArray[index] = partita;
-                else matchesArray.push(partita);
+                if (index !== -1) {
+                    // Mantieni lo stage dal segnaposto se esiste
+                    matchesArray[index] = { ...matchesArray[index], ...partita, isPlaceholder: false };
+                } else {
+                    matchesArray.push(partita);
+                }
             });
         } else {
             // Cerca un segnaposto della stessa fase che è ancora SCHEDULED
@@ -264,12 +266,18 @@ document.addEventListener("DOMContentLoaded", () => {
                     m.number === msg.number &&
                     m.state === "SCHEDULED"
                 );
+            } else if (msg.category === "campionato") {
+                // Per il campionato, cerca il segnaposto con le stesse squadre
+                placeholderIndex = matchesArray.findIndex(m =>
+                    m.team1 === msg.team1 && m.team2 === msg.team2
+                );
             }
 
             if (placeholderIndex !== -1) {
-                // Sostituisci il primo segnaposto disponibile con la partita reale
+                // Sostituisci il segnaposto mantenendo lo stage (giornata per campionato)
                 console.log(`Sostituzione segnaposto ${placeholderIndex} con partita reale:`, msg.team1, "vs", msg.team2);
-                matchesArray[placeholderIndex] = { ...msg, isPlaceholder: false };
+                const stage = matchesArray[placeholderIndex].stage;
+                matchesArray[placeholderIndex] = { ...msg, stage, isPlaceholder: false };
             } else {
                 // Cerca se la partita esiste già (per aggiornamenti)
                 const existingIndex = matchesArray.findIndex(m =>
@@ -277,8 +285,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
 
                 if (existingIndex !== -1) {
-                    // Aggiorna partita esistente
-                    matchesArray[existingIndex] = { ...msg, isPlaceholder: false };
+                    // Aggiorna partita esistente mantenendo lo stage
+                    const stage = matchesArray[existingIndex].stage;
+                    matchesArray[existingIndex] = { ...msg, stage, isPlaceholder: false };
                 } else {
                     // Aggiungi nuova partita
                     matchesArray.push({ ...msg, isPlaceholder: false });
