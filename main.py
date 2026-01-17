@@ -1,19 +1,19 @@
 import json
 import sys
 import asyncio
-from Matches.backend.db import tournament_results, championship_results
+from backend.db import tournament_results, championship_results
 
 # FIX PER WINDOWS - deve essere all'inizio prima di qualsiasi altra cosa
 if sys.platform == 'win32':
     asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 import logging
-from Matches.backend.db import matches
+from backend.db import matches
 import tornado.web
 import tornado.websocket
-import Matches.backend.simulators.tournament as tournament
-import Matches.backend.simulators.championship as championship
-import Matches.backend.simulators.match as match
+import backend.simulators.tournament as tournament
+import backend.simulators.championship as championship
+import backend.simulators.match as match
 
 
 BROKER = "test.mosquitto.org"
@@ -179,7 +179,7 @@ async def main():
     )
 
     app.listen(8888)
-    print("Server Tornado avviato su http://localhost:8888")
+    print("Server Tornado avviato su http://0.0.0.0:8888")
 
     #asyncio.create_task(mqtt_listener())
 

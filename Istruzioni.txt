@@ -1,0 +1,24 @@
+Clonare la repo (sostituisci URL con quello reale)
+git clone https://github.com/tuo-username/tuo-repo.git
+
+Entrare nella cartella del progetto
+cd tuo-repo/Matches
+
+(Opzionale ma consigliato) crea e attiva un virtual environment Python se vuoi usare Python locale
+python3 -m venv .venv
+source .venv/bin/activate    # su Linux/Mac
+# .venv\Scripts\activate     # su Windows
+
+Costruire le immagini Docker (dal docker-compose.yml e Dockerfile)
+docker compose build
+
+Avviare i container Docker (backend + mongo ecc.)
+docker compose up
+
+Aprire il browser e andare su:
+http://localhost:8888
+
+Per fermare il container:
+# Premi CTRL+C nel terminale dove gira docker compose up
+# Oppure esegui:
+docker compose down

@@ -1,6 +1,6 @@
-import Matches.backend.simulators.match as match
+import backend.simulators.match as match
 import random
-import Matches.backend.db as db
+import backend.db as db
 import asyncio
 import platform
 

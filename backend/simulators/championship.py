@@ -1,5 +1,5 @@
-import Matches.backend.simulators.match as match
-import Matches.backend.db as db
+import backend.simulators.match as match
+import backend.db as db
 import asyncio
 import platform
 
