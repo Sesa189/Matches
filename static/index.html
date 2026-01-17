@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Volley Tournament</title>
-        <link rel="stylesheet" href="/static/style.css">
-        <!-- ICONS -->
-        <link rel="stylesheet"
-              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    </head>
-    <body>
-        <div class="container_chat">
-            <h2>Elenco partite</h2>
+<head>
+    <meta charset="UTF-8">
+    <title>Volley Tournament</title>
+    <link rel="stylesheet" href="/static/style.css">
 
-            <ul id="matchList"></ul>
-        </div>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
 
-        <script src="/static/js/app.js"></script>
-    </body>
+<div class="container_chat">
+    <h2>Elenco partite</h2>
+
+    <div class="match-selector">
+        <button id="btn-torneo" class="active">Torneo</button>
+        <button id="btn-campionato">Campionato</button>
+    </div>
+
+    <div id="fase-container"></div>
+    <div id="giornata-container"></div>
+
+    <ul id="matchList"></ul>
+</div>
+
+<script src="/static/js/app.js"></script>
+</body>
 </html>

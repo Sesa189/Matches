@@ -28,6 +28,8 @@ h2 {
     text-align: center;
     margin-bottom: 20px;
     color: #222;
+    font-size: 42px;
+    font-weight: 1000;
 }
 
 /* ===== LISTA ===== */
@@ -35,20 +37,6 @@ h2 {
     list-style: none;
 }
 
-/* ===== CARD PARTITA ===== */
-/*#matchList li {
-    background: #fafafa;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 12px;
-
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    font-size: 15px;
-}*/
 /* CARD PARTITA */
 .match {
     background: #fafafa;
@@ -56,6 +44,23 @@ h2 {
     border-radius: 12px;
     padding: 16px 20px;
     margin-bottom: 14px;
+    transition: all 0.3s ease;
+}
+
+/* Segnaposto - stile diverso */
+.match.placeholder {
+    background: #f5f5f5;
+    border: 1px dashed #ccc;
+    opacity: 0.7;
+}
+
+.match.placeholder .match-teams {
+    color: #999;
+    font-style: italic;
+}
+
+.match.placeholder .match-status {
+    color: #999 !important;
 }
 
 /* Riga superiore: stato + data */
@@ -65,14 +70,14 @@ h2 {
     font-size: 13px;
     color: #666;
     margin-bottom: 10px;
-    gap: 6px; /* distanza tra stato e data */
-    align-items: center; /* allinea verticalmente testo e emoji */
+    gap: 6px;
+    align-items: center;
 }
 
 /* Data: pallino tra stato e data */
 .match-date::before {
-    content: "•"; /* solo il pallino */
-    margin: 0 6px; /* spazio prima e dopo il pallino */
+    content: "•";
+    margin: 0 6px;
     color: #666;
 }
 
@@ -81,9 +86,9 @@ h2 {
     font-weight: bold;
     text-transform: uppercase;
     color: #007bff;
-    display: inline-flex;  /* permette di allineare emoji e testo */
-    align-items: center;   /* centra verticalmente */
-    gap: 4px;              /* spazio tra emoji e testo */
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
 }
 
 /* Stato LIVE: rosso con emoji cerchio davanti */
@@ -93,12 +98,21 @@ h2 {
 
 /* Emoji cerchio davanti a LIVE */
 .match-status[data-state="live"]::before {
-    content: '🔴';          /* cerchio rosso */
-    display: inline-block;  /* necessario per vertical-align */
-    vertical-align: middle; /* centra emoji con testo */
-    font-size: 14px;        /* dimensione emoji */
+    content: '🔴';
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
 }
 
+/* Stato SCHEDULED */
+.match-status[data-state="scheduled"] {
+    color: #999;
+}
+
+/* Stato FINISHED */
+.match-status[data-state="finished"] {
+    color: #28a745;
+}
 
 /* Riga centrale: squadre + risultato */
 .match-main {
@@ -123,6 +137,11 @@ h2 {
     font-size: 16px;
 }
 
+/* Nascondi risultato per segnaposto */
+.match.placeholder .match-score {
+    display: none;
+}
+
 /* Riga inferiore: durata */
 .match-bottom {
     font-size: 13px;
@@ -134,3 +153,81 @@ h2 {
     font-weight: bold;
     color: #007bff;
 }
+
+/* ===== SELEZIONE TORNEO / CAMPIONATO ===== */
+.match-selector {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.match-selector button {
+    padding: 10px 22px;
+    border-radius: 20px;
+    border: 1px solid #007bff;
+    background: white;
+    color: #007bff;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+.match-selector button:hover {
+    background: #e8f1ff;
+}
+
+/* Bottone attivo */
+.match-selector button.active {
+    background: #007bff;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+/* Click */
+.match-selector button:active {
+    transform: scale(0.96);
+}
+
+/* ===== CONTENITORE PULSANTI FASI ===== */
+#fase-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+/* ===== PULSANTI FASI ===== */
+#fase-container button {
+    padding: 10px 22px;
+    border-radius: 20px;
+    border: 1px solid #007bff;
+    background: white;
+    color: #007bff;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+#fase-container button:hover {
+    background: #e8f1ff;
+}
+
+/* Stato attivo */
+#fase-container button.active {
+    background: #007bff;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,123,255,0.3);
+}
+
+/* Click */
+#fase-container button:active {
+    transform: scale(0.96);
+}
+
+
